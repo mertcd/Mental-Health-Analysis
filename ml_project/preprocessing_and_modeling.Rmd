@@ -4,11 +4,26 @@ output: html_document
 date: '2022-06-06'
 ---
 
-```{r }
+```{r}
+#calling library
+library(caret)
+library(tidyverse)
+library(shiny)
+library(readr)
+library(ggplot2)
+library(tidyr)
+library(interactions)
+library(dplyr)
+library(skimr)
+```
 
+
+
+```{r }
 library(readr)
 new_survey_dataset <- read_csv("new_survey_dataset2.csv")
-View(new_survey_dataset2)
+
+head(new_survey_dataset)
 
 ```
 
@@ -69,15 +84,20 @@ library(dplyr)
 library(data.table)
 library(datasets)
 library(ggplot2)
-str(x)
-pizzas <- copy(x)
-pizzas$treatment_seek<- NULL
-str(pizzas)
+
+pcain <- copy(x)
+pcain$treatment_seek<- NULL
+pcain$self_employed <- as.numeric(pcain$self_employed)
  
-pca <- prcomp(pizzas, scale. = TRUE, center = TRUE)
+pca <- prcomp(pcain, scale. = TRUE, center = TRUE)
 x <- as.data.frame(pca$x)
 ```
+ 
+```{r}
+library(ggbiplot)
 
+ggbiplot( pca)
+```
 
 
 
@@ -93,16 +113,8 @@ model_mars
 
 
 
-```{r}
-featurePlot(x = x, 
-            y = x$treatment_seek, 
-            plot = "box", 
-            ## Pass in options to bwplot() 
-            scales = list(y = list(relation="free"),
-                          x = list(rot = 90)),  
-            layout = c(4,1 ), 
-            auto.key = list(columns = 2))
-```
+
+
 
 
 

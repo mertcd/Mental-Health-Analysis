@@ -50,8 +50,6 @@ skimmed
 
 
 ```{r}
-#replace specific value for specific case
-str(survey_dataset)
 
 #replacing values for garbled entiries
 new_survey_dataset <- survey_dataset
@@ -154,12 +152,6 @@ colnames(new_survey_dataset) <- c("id", "timestamp", "age", "gender", "country",
 
 
 
-```{r}
-
-
-skimmed <- skim(new_survey_dataset)
-skimmed
-```
 
 
 
@@ -173,6 +165,10 @@ new_survey_dataset %>% filter(timestamp == "27.08.2014", country=="United States
   facet_wrap(~ gender)+
   scale_x_log10()
 ```
+
+
+
+
 
 ```{r}
 
@@ -325,6 +321,7 @@ str(new_survey_dataset)
 new_survey_dataset$comments<- NULL
 new_survey_dataset$treatment_seek<- as.factor(new_survey_dataset$treatment_seek)
 write.csv(new_survey_dataset,"new_survey_dataset2.csv", row.names = FALSE)
+
 skimmed <- skim(new_survey_dataset)
 skimmed
 
@@ -332,55 +329,5 @@ skimmed
 ```
 
 
-
-
-```{r}
-# Create the training and test datasets
-set.seed(100)
-
-# Step 1: Get row numbers for the training data
-trainRowNumbers <- createDataPartition(new_survey_dataset$treatment_seek, p=0.8, list=FALSE)
-
-# Step 2: Create the training  dataset
-trainData <- new_survey_dataset[trainRowNumbers,]
-
-# Step 3: Create the test dataset
-testData <- new_survey_dataset[-trainRowNumbers,]
-
-# Store X and Y for later use.
-x = trainData[, 7:27]
-y = trainData$treatment_seek
-```
-
-
-```{r}
-
-# Quick display of two cabapilities of GGally, to assess the distribution and correlation of variables 
-library(GGally)
- 
-# Create data 
-x$treatment_seek <- as.numeric(x$treatment_seek)
- 
-# Check correlations (as scatterplots), distribution and print corrleation coefficient 
-ggcorr(x, method = c("everything", "pearson")) 
-
-
-
-
-
-
-```
-```{r}
-# Set the seed for reproducibility
-set.seed(100)
-
-# Train the model using randomForest and predict on the training data itself.
-model_mars = train(treatment_seek ~ ., data=new_survey_dataset, method='rpart')
-fitted <- predict(model_mars)
-
-```
-```{r}
-model_mars
-```
 
 
