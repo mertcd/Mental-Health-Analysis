@@ -94,6 +94,7 @@ x <- as.data.frame(pca$x)
 ```
  
 ```{r}
+install.packages("ggbilot")
 library(ggbiplot)
 
 ggbiplot( pca)
@@ -112,9 +113,50 @@ model_mars
 ```
 
 
+```{r}
+AUC = list()
+Accuracy = list()
+```
+
+```{r}
+#Trainging
+logistic <- glm(x$treatment_seek ~ ., data=x, family = 'binomial')
+summary(logistic)
+
+## Now calculate the overall "Pseudo R-squared" and its p-value
+ll.null <- logistic$null.deviance/-2
+ll.proposed <- logistic$deviance/-2
+ 
+## McFadden's Pseudo R^2 = [ LL(Null) - LL(Proposed) ] / LL(Null)
+(ll.null - ll.proposed) / ll.null
+
+## The p-value for the R^2
+1 - pchisq(2*(ll.proposed - ll.null), df=(length(logistic$coefficients)-1))
+
+#Graph
+predicted.data <- data.frame(
+  probability.of.ts=logistic$fitted.values,
+  ts=x$treatment_seek)
+ 
+predicted.data <- predicted.data[
+  order(predicted.data$probability.of.ts, decreasing=FALSE),]
+predicted.data$rank <- 1:nrow(predicted.data)
+ 
+
+ggplot(data=predicted.data, aes(x=rank, y=probability.of.ts)) +
+  geom_point(aes(color=ts), alpha=1, shape=4, stroke=2) +
+  xlab("Index") +
+  ylab("Predicted probability of treatment seek")
+```
 
 
+```{r}
+library("party")
+data.ctree<-ctree(x$treatment_seek ~ ., data=x)
+table(predict(data.ctree), x$treatment_seek)
+plot(data.ctree)
 
+```
 
 
 
