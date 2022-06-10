@@ -184,17 +184,6 @@ base.plot + geom_histogram(aes(fill = gender), bins=5)
 base.plot + geom_density(aes(fill = gender), alpha = 0.5, adjust=20)
 ```
 
-```{r}
-
-```
-
-
-
-```{r}
-write.csv(new_survey_dataset,"new_survey_dataset2.csv", row.names = FALSE)
-```
-
-
 
 Let’s transform all values into numeric types.
 
@@ -320,7 +309,7 @@ str(new_survey_dataset)
 ```{r}
 new_survey_dataset$comments<- NULL
 new_survey_dataset$treatment_seek<- as.factor(new_survey_dataset$treatment_seek)
-write.csv(new_survey_dataset,"new_survey_dataset2.csv", row.names = FALSE)
+write.csv(new_survey_dataset,"new_survey_dataset.csv", row.names = FALSE)
 
 skimmed <- skim(new_survey_dataset)
 skimmed

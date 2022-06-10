@@ -21,7 +21,7 @@ library(skimr)
 
 ```{r }
 library(readr)
-new_survey_dataset <- read_csv("new_survey_dataset2.csv")
+new_survey_dataset <- read_csv("new_survey_dataset.csv")
 
 head(new_survey_dataset)
 
@@ -94,7 +94,8 @@ x <- as.data.frame(pca$x)
 ```
  
 ```{r}
-install.packages("ggbilot")
+library(devtools)
+install_github("vqv/ggbiplot")
 library(ggbiplot)
 
 ggbiplot( pca)
