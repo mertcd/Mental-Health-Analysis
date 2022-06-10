@@ -1,0 +1,67 @@
+---
+title: "Statistical Tests"
+output: html_document
+date: '2022-06-10'
+---
+```{r}
+#Importing the dataset after cleaning
+library(readr)
+dataset.mh <- read_csv("new_survey_dataset2.csv")
+
+```
+##Data Visualization
+```{r}
+#Visualizing the ages of the workers
+hist(dataset.mh$age, col="red",xlab = "Age", main = "Histogram Plot for ages", breaks = 15)
+boxplot(dataset.mh$age, col="red")
+
+```
+
+
+```{r}
+#Getting rid of the outliers
+newDF<-subset(dataset.mh, 10 < age & age < 70)
+hist(newDF$age, col="red",xlab = "Age" ,main = "Histogram Plot for ages",breaks = 15)
+#Data transformating using log transformation
+transformedDF<-transform(newDF, age.log=log2(age))
+hist(transformedDF$age.log, col="blue",xlab = "Transformed age" ,main = "Histogram Plot for age",breaks = 15)
+```
+
+**We can assume that the data is not normally distributed**
+
+##Single t-test
+**Our aim here is to check whether the mean of the workers age is equal or less than 30 years old with a confidence level of 95%**
+**H1: mu=<30, H1: mu>30, Alpha=0.05**
+
+
+```{r}
+#Applying Single t-test
+t.test(newDF$age, mu=30, alt = "greater", conf = 0.95)
+```
+**Since the p-value is less than alpha, we reject the null hypothesis**
+
+##Paired t-test
+**Our aim is to compare the difference between the males and females**
+**H1: mu=0, H1: mu!=0, Alpha=0.01**
+
+```{r}
+#Dividing the dataset to two groups
+library("usethis")
+library("devtools")
+source_gist("https://gist.github.com/mrdwab/6424112")
+
+sampledData<-stratified(newDF, "gender",select = list(gender= c("1","2")), size=200)
+
+males.ages<-sampledData$age[1:200]
+females.ages<-sampledData$age[201:400]
+
+boxplot(males.ages, females.ages, col=c("blue","red"))
+
+plot(males.ages, females.ages, col=c("blue", "red"), abline(a=0, b=1))
+```
+**We assume that the variables are metric and the difference of the paired values is normally distributed **
+
+```{r}
+t.test(males.ages, females.ages, mu=0, alt="two.sided", paired = T, conf = 0.99)
+```
+**Since the p-value is less than 0.05, we reject the null hypothesis**

@@ -119,7 +119,7 @@ Accuracy = list()
 ```
 
 ```{r}
-#Trainging
+#Trainging using Logistic Regression alogorithm
 logistic <- glm(x$treatment_seek ~ ., data=x, family = 'binomial')
 summary(logistic)
 
@@ -147,10 +147,13 @@ ggplot(data=predicted.data, aes(x=rank, y=probability.of.ts)) +
   geom_point(aes(color=ts), alpha=1, shape=4, stroke=2) +
   xlab("Index") +
   ylab("Predicted probability of treatment seek")
+
+#ts = treatment_seek
 ```
 
 
 ```{r}
+#Modeling using decision tree
 library("party")
 data.ctree<-ctree(x$treatment_seek ~ ., data=x)
 table(predict(data.ctree), x$treatment_seek)
