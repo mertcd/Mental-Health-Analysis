@@ -9,7 +9,7 @@ library(readr)
 dataset.mh <- read_csv("new_survey_dataset2.csv")
 
 ```
-##Data Visualization
+# Data Visualization
 ```{r}
 #Visualizing the ages of the workers
 hist(dataset.mh$age, col="red",xlab = "Age", main = "Histogram Plot for ages", breaks = 15)
@@ -29,7 +29,7 @@ hist(transformedDF$age.log, col="blue",xlab = "Transformed age" ,main = "Histogr
 
 **We can assume that the data is not normally distributed**
 
-##Single t-test
+# Single t-test
 **Our aim here is to check whether the mean of the workers age is equal or less than 30 years old with a confidence level of 95%**
 **H1: mu=<30, H1: mu>30, Alpha=0.05**
 
@@ -40,7 +40,7 @@ t.test(newDF$age, mu=30, alt = "greater", conf = 0.95)
 ```
 **Since the p-value is less than alpha, we reject the null hypothesis**
 
-##Paired t-test
+# Paired t-test
 **Our aim is to compare the difference between the males and females**
 **H1: mu=0, H1: mu!=0, Alpha=0.01**
 
