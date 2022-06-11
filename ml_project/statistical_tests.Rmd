@@ -29,6 +29,32 @@ hist(transformedDF$age.log, col="blue",xlab = "Transformed age" ,main = "Histogr
 
 **We can assume that the data is not normally distributed**
 
+# Confidence Interval for Mean
+
+**A confidence interval is the mean of your estimate plus and minus the variation in that estimate.**
+
+```{r}
+#sd is known
+norm.interval = function(data, variance, conf.level =0.95){
+  z = qnorm((1 - conf.level)/2, lower.tail=FALSE)
+  xbar = mean(data)
+  sdx = sqrt(variance/length(data))
+  c(xbar - z * sdx, xbar + z*sdx)
+}
+
+newDF.var <- var(newDF$age)
+norm.interval(newDF$age, newDF.var)
+```
+
+
+```{r}
+#Standard deviation is unknown
+newDF.CI <- t.test(newDF$age)$conf.int
+newDF.CI
+```
+
+
+
 # Single t-test
 **Our aim here is to check whether the mean of the workers age is equal or less than 30 years old with a confidence level of 95%**
 **H1: mu=<30, H1: mu>30, Alpha=0.05**
@@ -59,9 +85,45 @@ boxplot(males.ages, females.ages, col=c("blue","red"))
 
 plot(males.ages, females.ages, col=c("blue", "red"), abline(a=0, b=1))
 ```
+
 **We assume that the variables are metric and the difference of the paired values is normally distributed **
 
 ```{r}
 t.test(males.ages, females.ages, mu=0, alt="two.sided", paired = T, conf = 0.99)
 ```
 **Since the p-value is less than 0.05, we reject the null hypothesis**
+
+# One Sample Z-Test
+
+**A Z-test is a type of hypothesis test—a way for you to figure out if results from a test are valid or repeatable.**
+
+# Z Test
+
+- First visualize necessary column and convert to the normal distribution
+```{r}
+library(ggpubr)
+library(moments)
+
+#visualizing ages 
+x= age_df$age
+y = dnorm(x, mean(x), sd(x))
+
+   
+# Plot the graph.
+plot(x, y, xlab = "age", ylab = "normilized ages")
+```
+
+- perform one sample z-test
+
+```{r}
+library(BSDA)
+age_x <- sort(x)
+z.test(age_x, mu=mean(age_x), sigma.x= sd(age_x))
+```
+
+- The test statistic for the one sample z-test is 0 and the corresponding p-value 1.
+
+- Since, we have not sufficient evidence to reject the null hypothesis.
+
+- Thus, we conclude that the employee ages not around 30.
+
