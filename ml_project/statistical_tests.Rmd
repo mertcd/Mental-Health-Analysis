@@ -105,7 +105,7 @@ library(ggpubr)
 library(moments)
 
 #visualizing ages 
-x= age_df$age
+x= newDF$age
 y = dnorm(x, mean(x), sd(x))
 
    
@@ -118,12 +118,11 @@ plot(x, y, xlab = "age", ylab = "normilized ages")
 ```{r}
 library(BSDA)
 age_x <- sort(x)
+mean(x)
 z.test(age_x, mu=mean(age_x), sigma.x= sd(age_x))
 ```
 
 - The test statistic for the one sample z-test is 0 and the corresponding p-value 1.
 
-- Since, we have not sufficient evidence to reject the null hypothesis.
-
-- Thus, we conclude that the employee ages not around 30.
+- Since p value is greater than .05, we have sufficient evidence to reject the null hypothesis.
 
