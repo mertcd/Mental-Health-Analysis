@@ -73,8 +73,8 @@ set.seed(100)
 new_survey_dataset$treatment_seek <- as.factor(new_survey_dataset$treatment_seek)
 
 # Train the model using randomForest and predict on the training data itself.
-model_mars = train(treatment_seek ~ ., data=new_survey_dataset, method='rpart')
-model_mars
+model = train(treatment_seek ~ ., data=new_survey_dataset, method='rpart')
+model
 
 
 ```
@@ -109,8 +109,8 @@ ggbiplot( pca)
 
 x$treatment_seek <- as.factor(y)
 
-model_mars = train(treatment_seek ~ ., data=x, method='rf')
-model_mars
+model = train(treatment_seek ~ ., data=x, method='rf')
+model
 ```
 
 
