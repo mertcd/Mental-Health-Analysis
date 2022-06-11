@@ -29,6 +29,32 @@ hist(transformedDF$age.log, col="blue",xlab = "Transformed age" ,main = "Histogr
 
 **We can assume that the data is not normally distributed**
 
+# Confidence Interval for Mean
+
+**A confidence interval is the mean of your estimate plus and minus the variation in that estimate.**
+
+```{r}
+#sd is known
+norm.interval = function(data, variance, conf.level =0.95){
+  z = qnorm((1 - conf.level)/2, lower.tail=FALSE)
+  xbar = mean(data)
+  sdx = sqrt(variance/length(data))
+  c(xbar - z * sdx, xbar + z*sdx)
+}
+
+newDF.var <- var(newDF$age)
+norm.interval(newDF$age, newDF.var)
+```
+
+
+```{r}
+#Standard deviation is unknown
+newDF.CI <- t.test(newDF$age)$conf.int
+newDF.CI
+```
+
+
+
 # Single t-test
 **Our aim here is to check whether the mean of the workers age is equal or less than 30 years old with a confidence level of 95%**
 **H1: mu=<30, H1: mu>30, Alpha=0.05**
@@ -59,9 +85,62 @@ boxplot(males.ages, females.ages, col=c("blue","red"))
 
 plot(males.ages, females.ages, col=c("blue", "red"), abline(a=0, b=1))
 ```
+
 **We assume that the variables are metric and the difference of the paired values is normally distributed **
 
 ```{r}
 t.test(males.ages, females.ages, mu=0, alt="two.sided", paired = T, conf = 0.99)
 ```
 **Since the p-value is less than 0.05, we reject the null hypothesis**
+
+# Z-Test
+
+**A Z-test is a type of hypothesis test—a way for you to figure out if results from a test are valid or repeatable.**
+
+# One Sample Z-test
+
+- First visualize necessary column 
+```{r}
+library(ggpubr)
+library(moments)
+
+#visualizing ages 
+age_df <- subset(newDF,subset = tech_company == 1, select =age )
+
+age_tech <-  sort(age_df$age)
+mean(age_tech)
+plot(age_tech)
+
+```
+
+
+
+```{r}
+library(BSDA)
+
+z.test(age_tech, mu=mean(age_tech), sigma.x= sd(age_tech))
+```
+
+- The test statistic for the one sample z-test is 0 and the corresponding p-value 1.
+
+- Since p value is greater than .05, we have not sufficient evidence to reject the null hypothesis.
+
+
+# 2 Sample Z-test
+
+```{r}
+#subsetted to then data fframes with respect to working with tech company or not
+age_df_1 <- subset(newDF,subset = tech_company == 1, select =age )
+age_df_0 <- subset(newDF,subset = tech_company == 0, select =age )
+
+age_tech_1 <-  sort(age_df_1$age)
+age_tech_0 <-  sort(age_df_0$age)
+
+```
+
+```{r}
+z.test(x=age_tech_1, y=age_tech_0, mu=0, sigma.x=sd(age_tech_1), sigma.y=sd(age_tech_0))
+```
+- The test statistic for the one sample z-test is -1.6843 and the corresponding p-value = 0.09213.
+
+- Since p value is greater than .05, we have not sufficient evidence to reject the null hypothesis.

@@ -4,12 +4,6 @@ output: html_document
 date: '2022-06-04'
 ---
 
-```{r}
-
-```
-
-
-
 ```{r setup, include=FALSE}
 options(scipen=999)
 
@@ -148,12 +142,6 @@ colnames(new_survey_dataset) <- c("id", "timestamp", "age", "gender", "country",
 
 # Better names!
 ```
-
-
-
-
-
-
 
 ```{r}
 #plotting
