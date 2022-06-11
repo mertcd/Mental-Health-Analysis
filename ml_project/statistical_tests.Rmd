@@ -99,7 +99,7 @@ t.test(males.ages, females.ages, mu=0, alt="two.sided", paired = T, conf = 0.99)
 
 # One Sample Z-test
 
-- First visualize necessary column and convert to the normal distribution
+- First visualize necessary column 
 ```{r}
 library(ggpubr)
 library(moments)
