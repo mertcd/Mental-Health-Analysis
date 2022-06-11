@@ -105,25 +105,42 @@ library(ggpubr)
 library(moments)
 
 #visualizing ages 
-x= newDF$age
-age_x <- sort(x)
-mean(age_x)
-y = dnorm(age_x, mean(age_x), sd(age_x))
+age_df <- subset(newDF,subset = tech_company == 1, select =age )
 
-   
-# Plot the graph.
-plot(y, xlab = "age", ylab = "normilized ages")
+age_tech <-  sort(age_df$age)
+mean(age_tech)
+plot(age_tech)
+
 ```
 
-- perform one sample z-test
+# One Sample Z-test
 
 ```{r}
 library(BSDA)
 
-z.test(y, mu=mean(y), sigma.x= sd(y))
+z.test(age_tech, mu=mean(age_tech), sigma.x= sd(age_tech))
 ```
 
 - The test statistic for the one sample z-test is 0 and the corresponding p-value 1.
 
-- Since p value is greater than .05, we have sufficient evidence to reject the null hypothesis.
+- Since p value is greater than .05, we have not sufficient evidence to reject the null hypothesis.
 
+
+# 2 Sample Z-test
+
+```{r}
+#subsetted to then data fframes with respect to working with tech company or not
+age_df_1 <- subset(newDF,subset = tech_company == 1, select =age )
+age_df_0 <- subset(newDF,subset = tech_company == 0, select =age )
+
+age_tech_1 <-  sort(age_df_1$age)
+age_tech_0 <-  sort(age_df_0$age)
+
+```
+
+```{r}
+z.test(x=age_tech_1, y=age_tech_0, mu=0, sigma.x=sd(age_tech_1), sigma.y=sd(age_tech_0))
+```
+- The test statistic for the one sample z-test is -1.6843 and the corresponding p-value = 0.09213.
+
+- Since p value is greater than .05, we have not sufficient evidence to reject the null hypothesis.
