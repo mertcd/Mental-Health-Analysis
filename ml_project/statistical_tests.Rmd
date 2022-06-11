@@ -106,20 +106,21 @@ library(moments)
 
 #visualizing ages 
 x= newDF$age
-y = dnorm(x, mean(x), sd(x))
+age_x <- sort(x)
+mean(age_x)
+y = dnorm(age_x, mean(age_x), sd(age_x))
 
    
 # Plot the graph.
-plot(x, y, xlab = "age", ylab = "normilized ages")
+plot(y, xlab = "age", ylab = "normilized ages")
 ```
 
 - perform one sample z-test
 
 ```{r}
 library(BSDA)
-age_x <- sort(x)
-mean(x)
-z.test(age_x, mu=mean(age_x), sigma.x= sd(age_x))
+
+z.test(y, mu=mean(y), sigma.x= sd(y))
 ```
 
 - The test statistic for the one sample z-test is 0 and the corresponding p-value 1.
