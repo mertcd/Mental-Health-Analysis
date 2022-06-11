@@ -114,10 +114,7 @@ model_mars
 ```
 
 
-```{r}
-AUC = list()
-Accuracy = list()
-```
+
 
 ```{r}
 #Trainging using Logistic Regression alogorithm
